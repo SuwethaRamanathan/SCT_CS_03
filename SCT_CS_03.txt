@@ -1,0 +1,76 @@
+import re
+
+def check_length(password):
+    """Check the length of the password."""
+    return len(password) >= 8
+
+def check_uppercase(password):
+    """Check if the password contains at least one uppercase letter."""
+    return bool(re.search(r'[A-Z]', password))
+
+def check_lowercase(password):
+    """Check if the password contains at least one lowercase letter."""
+    return bool(re.search(r'[a-z]', password))
+
+def check_letters(password):
+    """Check if the password contains at least one letter (uppercase or lowercase)."""
+    return bool(re.search(r'[A-Za-z]', password))
+
+def check_numbers(password):
+    """Check if the password contains at least one number."""
+    return bool(re.search(r'[0-9]', password))
+
+def check_special_characters(password):
+    """Check if the password contains at least one special character."""
+    return bool(re.search(r'[!@#$%^&*(),.?":{}|<>]', password))
+
+def check_common_patterns(password):
+    """Check for common patterns like 'one23', 'password', etc."""
+    common_patterns = ['one23', 'password', 'admin', 'qwerty', 'abc']
+    for pattern in common_patterns:
+        if pattern in password.lower():
+            return False
+    return True
+
+def assess_password_strength(password):
+    """Assess the strength of the password."""
+    score = 0
+    if check_length(password):
+        score += 1
+    if check_uppercase(password):
+        score += 1
+    if check_lowercase(password):
+        score += 1
+    if check_letters(password):
+        score += 1
+    if check_numbers(password):
+        score += 1
+    if check_special_characters(password):
+        score += 1
+    if check_common_patterns(password):
+        score += 1
+
+    return score
+
+def main():
+    password = input("Enter a password to assess its strength: ")
+    strength_score = assess_password_strength(password)
+    
+    print("\nPassword Strength Assessment:")
+    print(f"Length: {'✔' if check_length(password) else '✘'}")
+    print(f"Uppercase Letters: {'✔' if check_uppercase(password) else '✘'}")
+    print(f"Lowercase Letters: {'✔' if check_lowercase(password) else '✘'}")
+    print(f"Letters: {'✔' if check_letters(password) else '✘'}")
+    print(f"Numbers: {'✔' if check_numbers(password) else '✘'}")
+    print(f"Special Characters: {'✔' if check_special_characters(password) else '✘'}")
+    print(f"Common Patterns Avoided: {'✔' if check_common_patterns(password) else '✘'}")
+
+    if strength_score <= 2:
+        print("\nStrength: Weak")
+    elif 3 <= strength_score <= 4:
+        print("\nStrength: Moderate")
+    else:
+        print("\nStrength: Strong")
+
+if __name__ == "__main__":
+    main()
